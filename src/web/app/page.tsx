@@ -1,7 +1,6 @@
 import SolveTab from "@/components/solve-tab";
 import { Button } from "@/components/ui/button";
 import { Github } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
@@ -15,7 +14,7 @@ export default function Home() {
           Oleh Mesach Harmasendro 13522117
         </p>
         <Button className="flex flex-row gap-3">
-          <Link href="https://github.com/Otzzu/tucil-stima-satu">
+          <Link className="flex flex-row gap-3" href="https://github.com/Otzzu/tucil-stima-satu">
             <Github className="h-4 w-4 text-white" />
             <p className="text-base text-white">GitHub</p>
           </Link>
