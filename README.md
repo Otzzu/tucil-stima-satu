@@ -9,7 +9,7 @@ program akan mencari buffer yang paling optimal berdasarkan data reward tersebut
 input biasa, input random, dan input file txt. Solusi yang diberikan pada program web ini juga dapat di download ke dalam bentuk file txt.
 
 ## Built With
-* [JavaScript]([https://isocpp.org/](https://developer.mozilla.org/en-US/docs/Web/JavaScript))
+* [JavaScript]([https://isocpp.org/](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 * [TypeScript](https://www.typescriptlang.org/docs/)
 * [Node.js](https://nodejs.org/docs/latest/api/)
 * [Next.js](https://nextjs.org/)
