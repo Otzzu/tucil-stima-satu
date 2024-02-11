@@ -1,6 +1,16 @@
 import { formSchema } from "@/components/solve-rinput";
 import { z } from "zod";
 
+export function validToken(seq: string[]) {
+  const res = seq.filter((s) => s.length !== 2);
+
+  if (res.length === 0) return true;
+
+  return false;
+}
+
+
+
 export const checkDuplicate = (input: string[]) => {
   const duplicates = input.filter(
     (item, index) => input.indexOf(item) !== index
@@ -331,7 +341,7 @@ export class Solver {
       .map((cor) => `${cor[1] + 1}, ${cor[0] + 1}`)
       .join("\n");
 
-    return `${isFull ? strFull.join("\n") : ""}${
+    return `${false ? strFull.join("\n") : ""}${
       this.maxReward
     }\n${strBuff}\n${strCor}\n\n${this.time.toFixed(3)}ms`;
   }

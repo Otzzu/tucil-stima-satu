@@ -11,10 +11,14 @@ export default function Home() {
         <h1 className="text-[100px] font-extrabold leading-tight text-primary">
           CyberPunk 2077 Solver
         </h1>
-        <p className="text-lg font-bold text-secondary">Oleh Mesach Harmasendro 13522117</p>
+        <p className="text-lg font-bold text-secondary">
+          Oleh Mesach Harmasendro 13522117
+        </p>
         <Button className="flex flex-row gap-3">
-          <Github className="h-4 w-4 text-white" />
-          <p className="text-base text-white">GitHub</p>
+          <Link href="https://github.com/Otzzu/tucil-stima-satu">
+            <Github className="h-4 w-4 text-white" />
+            <p className="text-base text-white">GitHub</p>
+          </Link>
         </Button>
       </div>
 

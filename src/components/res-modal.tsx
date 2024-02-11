@@ -52,17 +52,21 @@ const ResModal = () => {
           box.push({
             content: matrix[i][j],
             isAnswer: true,
-            isFirst: i === kor[0][0] && j === kor[0][1],
+            isFirst: kor.length > 0 && i === kor[0][0] && j === kor[0][1],
             isLast:
-              i === kor[kor.length - 1][0] && j === kor[kor.length - 1][1],
+              kor.length > 0 &&
+              i === kor[kor.length - 1][0] &&
+              j === kor[kor.length - 1][1],
           });
         } else {
           box.push({
             content: matrix[i][j],
             isAnswer: false,
-            isFirst: i === kor[0][0] && j === kor[0][1],
+            isFirst: kor.length > 0 && i === kor[0][0] && j === kor[0][1],
             isLast:
-              i === kor[kor.length - 1][0] && j === kor[kor.length - 1][1],
+              kor.length > 0 &&
+              i === kor[kor.length - 1][0] &&
+              j === kor[kor.length - 1][1],
           });
         }
       }
@@ -152,9 +156,9 @@ const ResModal = () => {
                   ))}
                 </div>
                 <h3>Max Buffer Length: {data.bufferSize}</h3>
-                <h3>Optimal Sequence: {data.answBuff.join(" ")} </h3>
+                <h3>Optimal Buffer: {data.answBuff.join(" ")} </h3>
                 <h3>
-                  Optimal Sequence (Koordinat):{" "}
+                  Optimal Buffer (Koordinat):{" "}
                   {data.answBuffCor
                     .map((c) => `(${c[1] + 1}, ${c[0] + 1})`)
                     .join(" ")}{" "}
@@ -171,7 +175,10 @@ const ResModal = () => {
                 }}
               >
                 {data.matrix[0].map((d, i) => {
-                  if (i === data.answBuffCor[0][1]) {
+                  if (
+                    data.answBuffCor.length > 0 &&
+                    i === data.answBuffCor[0][1]
+                  ) {
                     return (
                       <div className="flex justify-center items-center w-[40px]">
                         <ArrowDown className="text-primary font-bold w-5 h-5" />

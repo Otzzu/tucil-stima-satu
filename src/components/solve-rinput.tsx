@@ -14,7 +14,7 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { Solver, checkDuplicate } from "@/utils/utils";
+import { Solver, checkDuplicate, validToken } from "@/utils/utils";
 import useModal from "@/hooks/use-modal";
 import { useState } from "react";
 import Loading from "./loading";
@@ -61,10 +61,17 @@ const SolveRInput = () => {
       return false
     }
 
+    if (!validToken(tok.split(" "))){
+      form.setError("token", { message: "each token length must be equal to 2" });
+      return false
+    }
+
     if (checkDuplicate(tok.split(" ")).length > 0) {
       form.setError("token", { message: "token must be unique" });
       return false
     }
+
+
 
     return true
   };
@@ -116,7 +123,7 @@ const SolveRInput = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-slate-400">
-                        Buffer Length:{" "}
+                        Max Buffer Length:{" "}
                       </FormLabel>
                       <FormControl>
                         <Input type="number" placeholder="Ex: 3" {...field} />

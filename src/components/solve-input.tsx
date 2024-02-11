@@ -15,7 +15,7 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
-import { Solver } from "@/utils/utils";
+import { Solver, validToken } from "@/utils/utils";
 import useModal from "@/hooks/use-modal";
 import Loading from "./loading";
 import { useState } from "react";
@@ -55,13 +55,45 @@ const SolveInput = () => {
       reward: "",
     },
   });
+
+  const additionalCheck = () => {
+    const rew = form.getValues("reward");
+    const sequ = form.getValues("sequence");
+
+    if (!validToken(sequ.split("\n").join(" ").split(" "))){
+      form.setError("sequence", { message: "each token length must be equal to 2" });
+      return false
+    }
+
+    if (!validToken(form.getValues("matrix").split("\n").join(" ").split(" "))){
+      form.setError("matrix", { message: "each token length must be equal to 2" });
+      return false
+    }
+
+    if (rew.split("\n").length !== sequ.split("\n").length) {
+      form.setError("reward", {
+        message: "Many sequence and reward must be the same",
+      });
+      form.setError("sequence", {
+        message: "Many sequence and reward must be the same",
+      });
+
+      return false;
+    }
+
+
+    return true;
+  };
   return (
     <>
       {loading && <Loading />}
       <div className="w-full">
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(handleOnSubmit)}
+            onSubmit={(e) => {
+              e.preventDefault();
+              additionalCheck() && form.handleSubmit(handleOnSubmit)(e);
+            }}
             className="gap-3 flex flex-col"
           >
             <FormField
