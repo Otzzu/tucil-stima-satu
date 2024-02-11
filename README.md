@@ -37,7 +37,8 @@ input biasa, input random, dan input file txt. Solusi yang diberikan pada progra
    npm run build
    npm run start
    ```
-   
+5. Pada browser anda buka [http://localhost:3000/](http://localhost:3000/). Note: pastikan localhost port 3000 tidak dipakai oleh program lain
+
 ## Author
 | Name  | NIM | Contact
 | ------------- | ------------- | ------------- |
