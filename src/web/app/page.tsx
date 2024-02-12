@@ -13,8 +13,8 @@ export default function Home() {
         <p className="text-lg font-bold text-secondary">
           Oleh Mesach Harmasendro 13522117
         </p>
-        <Button className="flex flex-row gap-3">
-          <Link className="flex flex-row gap-3" href="https://github.com/Otzzu/tucil-stima-satu">
+        <Button className="flex flex-row gap-3 justify-center items-center">
+          <Link className="flex flex-row gap-3 justify-center items-center" href="https://github.com/Otzzu/tucil-stima-satu" rel="noopener noreferrer" target="_blank">
             <Github className="h-4 w-4 text-white" />
             <p className="text-base text-white">GitHub</p>
           </Link>

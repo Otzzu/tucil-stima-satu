@@ -66,8 +66,8 @@ const SolveFile = () => {
           />
         </div>
         <div className="w-full flex justify-end items-center ">
-          <Button onClick={handleClick} size="lg" disabled={!file}>
-            Solve
+          <Button onClick={handleClick} size="lg" disabled={!file || loading}>
+            {loading ? "Loading..." : "Solve"}
           </Button>
         </div>
       </div>

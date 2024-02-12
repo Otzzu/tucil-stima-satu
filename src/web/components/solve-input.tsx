@@ -28,12 +28,12 @@ const formSchema = z.object({
 });
 
 const SolveInput = () => {
-  const { setSolver, onOpen, setType } = useModal();
-  const [loading, setLoading] = useState(false);
+  const { setSolver, onOpen, setType, loading, setLoading } = useModal();
 
   const handleOnSubmit = (data: z.infer<typeof formSchema>) => {
-    setLoading(true);
     // console.log(data);
+    setLoading(true);
+
     const solver = new Solver();
 
     const res = solver
@@ -44,6 +44,7 @@ const SolveInput = () => {
     setType("input");
     // console.log(res)
     setLoading(false);
+
     onOpen();
   };
   const form = useForm<z.infer<typeof formSchema>>({
@@ -60,14 +61,20 @@ const SolveInput = () => {
     const rew = form.getValues("reward");
     const sequ = form.getValues("sequence");
 
-    if (!validToken(sequ.split("\n").join(" ").split(" "))){
-      form.setError("sequence", { message: "each token length must be equal to 2" });
-      return false
+    if (!validToken(sequ.split("\n").join(" ").split(" "))) {
+      form.setError("sequence", {
+        message: "each token length must be equal to 2",
+      });
+      return false;
     }
 
-    if (!validToken(form.getValues("matrix").split("\n").join(" ").split(" "))){
-      form.setError("matrix", { message: "each token length must be equal to 2" });
-      return false
+    if (
+      !validToken(form.getValues("matrix").split("\n").join(" ").split(" "))
+    ) {
+      form.setError("matrix", {
+        message: "each token length must be equal to 2",
+      });
+      return false;
     }
 
     if (rew.split("\n").length !== sequ.split("\n").length) {
@@ -81,7 +88,6 @@ const SolveInput = () => {
       return false;
     }
 
-
     return true;
   };
   return (
@@ -90,9 +96,9 @@ const SolveInput = () => {
       <div className="w-full">
         <Form {...form}>
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              additionalCheck() && form.handleSubmit(handleOnSubmit)(e);
+              additionalCheck() && await form.handleSubmit(handleOnSubmit)(e);
             }}
             className="gap-3 flex flex-col"
           >
@@ -187,8 +193,8 @@ BD 1C BD 55
               </div>
             </div>
             <div className="w-full flex items-center justify-end">
-              <Button size="lg" type="submit">
-                Solve
+              <Button size="lg" type="submit" disabled={loading}>
+                {loading ? "Loading..." : "Solve"}
               </Button>
             </div>
           </form>

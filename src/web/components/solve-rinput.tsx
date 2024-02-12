@@ -16,8 +16,9 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Solver, checkDuplicate, validToken } from "@/utils/utils";
 import useModal from "@/hooks/use-modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loading from "./loading";
+// import FormRInput from "./form-rinput";
 
 export const formSchema = z.object({
   numToken: z.coerce.number().min(2),
@@ -33,9 +34,11 @@ const SolveRInput = () => {
   const { setSolver, onOpen, setType } = useModal();
   const [loading, setLoading] = useState(false);
 
-  const handleOnSubmit = (data: z.infer<typeof formSchema>) => {
+  const handleOnSubmit = async (data: z.infer<typeof formSchema>) => {
     // console.log(data);
     setLoading(true);
+    // console.log(isSubmitting);
+    // console.log(loading);
     const solver = new Solver();
 
     const res = solver.readCli(data).calc();
@@ -49,7 +52,6 @@ const SolveRInput = () => {
     const num = Number.parseInt(form.getValues("numToken") as any);
     const tok = form.getValues("token");
 
-
     if (num !== tok.split(" ").length) {
       form.setError("numToken", {
         message: "the number of unique tokens does not match",
@@ -58,23 +60,24 @@ const SolveRInput = () => {
         message: "the number of unique tokens does not match",
       });
 
-      return false
+      return false;
     }
 
-    if (!validToken(tok.split(" "))){
-      form.setError("token", { message: "each token length must be equal to 2" });
-      return false
+    if (!validToken(tok.split(" "))) {
+      form.setError("token", {
+        message: "each token length must be equal to 2",
+      });
+      return false;
     }
 
     if (checkDuplicate(tok.split(" ")).length > 0) {
       form.setError("token", { message: "token must be unique" });
-      return false
+      return false;
     }
 
-
-
-    return true
+    return true;
   };
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -87,13 +90,24 @@ const SolveRInput = () => {
       token: "",
     },
   });
+
+  const { isSubmitting } = form.formState;
+
+  console.log("submit", isSubmitting);
   return (
-    <>
+    <div>
       {loading && <Loading />}
       <div className="w-full">
+        {/* <FormRInput setLoading={setLoading}/> */}
         <Form {...form}>
           <form
-            onSubmit={(e) => {e.preventDefault(); additionalCheck() && form.handleSubmit(handleOnSubmit)(e)}}
+            onSubmit={async (e) => {
+              // setLoading(true);
+
+              e.preventDefault();
+              additionalCheck() && (await form.handleSubmit(handleOnSubmit)(e));
+              // setLoading(false);
+            }}
             className="gap-3 flex flex-col"
           >
             <div className="flex w-full flex-wrap gap-3">
@@ -230,14 +244,14 @@ const SolveRInput = () => {
               </div>
             </div>
             <div className="w-full flex items-center justify-end">
-              <Button size="lg" type="submit">
-                Solve
+              <Button size="lg" type="submit" disabled={loading}>
+                {loading ? "Loading..." : "Solve"}
               </Button>
             </div>
           </form>
         </Form>
       </div>
-    </>
+    </div>
   );
 };
 

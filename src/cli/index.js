@@ -304,19 +304,19 @@ Pilih jenis masukan:
 
     const minLen = Math.min(...lengths);
 
-    maxSumReward = calcMaxRewardSum(this.reward);
+    maxSumReward = calcMaxRewardSum(reward);
     for (let j = minLen; j <= bufferSize; j++) {
       for (let i = 0; i < kolom; i++) {
         if (!end) solve(j, [], [], true, 0, i);
       }
     }
-    const end = performance.now();
+    const timeEnd = performance.now();
 
     const buffStr = answBuff.join(" ");
     const buffCorStr = answBuffCor
       .map((cor) => `${cor[1] + 1}, ${cor[0] + 1}`)
       .join("\n");
-    const time = (end - start).toFixed(3).toString().concat(" ms");
+    const time = (timeEnd - start).toFixed(3).toString().concat(" ms");
 
     console.log(maxReward);
     console.log(buffStr);
@@ -366,6 +366,8 @@ Pilih jenis masukan:
     maxReward = undefined;
     answBuff = [];
     answBuffCor = [];
+    end = false;
+    maxSumReward = undefined;
   }
 }
 

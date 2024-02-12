@@ -9,6 +9,8 @@ interface ModalStore {
   setSolver: (solver: Solver) => void;
   type: "input" | "rinput" | "file" | null;
   setType: (type: "input" | "rinput" | "file" | null) => void;
+  loading: boolean;
+  setLoading: (load: boolean) => void;
 }
 
 const useModal = create<ModalStore>((set) => ({
@@ -18,7 +20,9 @@ const useModal = create<ModalStore>((set) => ({
   solver: null,
   setSolver: (solver) => set({ solver: solver }),
   type: null,
-  setType: (type) => set({type: type}) 
-}))
+  setType: (type) => set({ type: type }),
+  loading: false,
+  setLoading: (load) => set({loading: load})
+}));
 
-export default useModal
+export default useModal;

@@ -161,9 +161,9 @@ export class Solver {
         if (!this.end) this.solve(j, [], [], true, 0, i);
       }
     }
-    const end = performance.now();
+    const timeEnd = performance.now();
 
-    this.time = end - start;
+    this.time = timeEnd - start;
 
     return this;
   }
