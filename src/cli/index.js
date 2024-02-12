@@ -15,7 +15,7 @@ let reward = [];
 let regex = [];
 let baris = 0;
 let kolom = 0;
-let maxReward = 0;
+let maxReward = undefined;
 let answBuff = [];
 let answBuffCor = [];
 
@@ -175,7 +175,13 @@ function solve(buffLen, currBuffCor, currBuff, isVertical, bar, kol) {
     const currRew = calcReward(currBuff);
     // console.log(currBuff)
 
-    if (currRew > maxReward) {
+    if (maxReward !== undefined) {
+      if (currRew > maxReward) {
+        maxReward = currRew;
+        answBuff = [...currBuff];
+        answBuffCor = currBuffCor.slice();
+      }
+    } else {
       maxReward = currRew;
       answBuff = [...currBuff];
       answBuffCor = currBuffCor.slice();
@@ -321,7 +327,7 @@ Pilih jenis masukan:
     regex = [];
     baris = 0;
     kolom = 0;
-    maxReward = 0;
+    maxReward = undefined;
     answBuff = [];
     answBuffCor = [];
   }

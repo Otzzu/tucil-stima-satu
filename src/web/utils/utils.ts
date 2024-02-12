@@ -9,8 +9,6 @@ export function validToken(seq: string[]) {
   return false;
 }
 
-
-
 export const checkDuplicate = (input: string[]) => {
   const duplicates = input.filter(
     (item, index) => input.indexOf(item) !== index
@@ -83,25 +81,13 @@ export class Solver {
   private regex: RegExp[] = [];
   private baris: number = 0;
   private kolom: number = 0;
-  private maxReward: number = 0;
+  private maxReward: number | undefined = undefined;
   private answBuff: string[] = [];
   private answBuffCor: number[][] = [];
   private time: number = 0;
   constructor() {}
 
-  public calc(): Solver {
-    const start = performance.now();
-    for (let j = 2; j <= this.bufferSize; j++) {
-      for (let i = 0; i < this.kolom; i++) {
-        this.solve(j, [], [], true, 0, i);
-      }
-    }
-    const end = performance.now();
-
-    this.time = end - start;
-
-    return this;
-  }
+  
 
   public readDataFile(data: string): Solver {
     this.cleanUp();
@@ -138,6 +124,19 @@ export class Solver {
 
     return this;
   }
+  public calc(): Solver {
+    const start = performance.now();
+    for (let j = 2; j <= this.bufferSize; j++) {
+      for (let i = 0; i < this.kolom; i++) {
+        this.solve(j, [], [], true, 0, i);
+      }
+    }
+    const end = performance.now();
+
+    this.time = end - start;
+
+    return this;
+  }
 
   private solve(
     buffLen: number,
@@ -151,7 +150,13 @@ export class Solver {
       const currRew = calcReward(currBuff, this.regex, this.reward);
       // console.log(currBuff)
 
-      if (currRew > this.maxReward) {
+      if (this.maxReward !== undefined) {
+        if (currRew > this.maxReward) {
+          this.maxReward = currRew;
+          this.answBuff = [...currBuff];
+          this.answBuffCor = currBuffCor.slice();
+        }
+      } else {
         this.maxReward = currRew;
         this.answBuff = [...currBuff];
         this.answBuffCor = currBuffCor.slice();
@@ -303,7 +308,7 @@ export class Solver {
     this.regex = [];
     this.baris = 0;
     this.kolom = 0;
-    this.maxReward = 0;
+    this.maxReward = undefined;
     this.answBuff = [];
     this.answBuffCor = [];
     this.time = 0;
