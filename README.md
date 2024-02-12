@@ -65,7 +65,7 @@ masih sedang berlangsung oleh sebab itu sebaiknya ditunggu saja dan jika untuk w
 dengan cepat maka silahkan refresh halaman tersebut dan masukan kembali data yang ingin dicari solusinya
 
 
-![photo](https://drive.google.com/file/d/1jbBHLegVd7vMFpiZA_wfLf66Zfh2ahnJ/view?usp=sharing)
+![photo](https://res.cloudinary.com/dssrh53qx/image/upload/v1707773518/mo2aatnmycpxkjcgi5gv.png)
 Jika saat menjalankan program web mendapat pemberitahuan seperti gambar di atas ini maka sebaiknya pemberitahuan tersebut diabaikan dan tetap menunggu saja. Hal tersebut bukanlah error hanya saja terkadang untuk beberapa kasus program memerlukan waktu yang cukup lama untuk mencari solusi sehingga menimbulkan kejadian seperti gambar di atas.
 
 
