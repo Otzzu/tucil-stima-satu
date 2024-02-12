@@ -57,6 +57,10 @@ program berbasis cli juga akan terdapat pada folder test dengan nama Output.txt.
    node index.js
    ```
 
+## Note
+Untuk program berbasis cli pastikan file masukan berada pada folder test. Output file pada program cli juga akan berada pada folder test dengan nama Output.txt. Pastikan
+masukan harus selalu _**BENAR**_ dan _**VALID**_ terutama pada program berbasis cli untuk menghindari kesalahan-kesalahan yang tidak diinginkan.
+
 ## Author
 | Name  | NIM | Contact
 | ------------- | ------------- | ------------- |
