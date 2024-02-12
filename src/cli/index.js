@@ -18,11 +18,27 @@ let kolom = 0;
 let maxReward = undefined;
 let answBuff = [];
 let answBuffCor = [];
+let end = false;
+let maxSumReward = undefined;
 
 const read = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
+
+function calcMaxRewardSum(arr) {
+  let maxSoFar = 0;
+
+  const natNum = arr.filter((n) => n >= 0);
+
+  if (natNum.length > 0) {
+    maxSoFar = natNum.reduce((a, b) => a + b, 0);
+  } else {
+    maxSoFar = Math.max(...natNum);
+  }
+
+  return maxSoFar;
+}
 
 async function readFile(fileName) {
   const data = await fs.readFile(
@@ -159,11 +175,15 @@ async function writeFile(...content) {
 
 function calcReward(buffer) {
   const str = buffer.join(" ");
-  let rew = 0;
+  let rew = undefined;
   for (let i = 0; i < regex.length; i++) {
     const res = str.match(regex[i]);
     if (res) {
-      rew += reward[i];
+      if (!rew) {
+        rew = reward[i];
+      } else {
+        rew += reward[i];
+      }
     }
   }
 
@@ -175,16 +195,25 @@ function solve(buffLen, currBuffCor, currBuff, isVertical, bar, kol) {
     const currRew = calcReward(currBuff);
     // console.log(currBuff)
 
-    if (maxReward !== undefined) {
-      if (currRew > maxReward) {
+    if (calcReward !== undefined) {
+      if (currRew === maxSumReward) {
         maxReward = currRew;
         answBuff = [...currBuff];
         answBuffCor = currBuffCor.slice();
+        end = true;
+      } else {
+        if (maxReward !== undefined) {
+          if (currRew && currRew > maxReward) {
+            maxReward = currRew;
+            answBuff = [...currBuff];
+            answBuffCor = currBuffCor.slice();
+          }
+        } else {
+          maxReward = currRew;
+          answBuff = [...currBuff];
+          answBuffCor = currBuffCor.slice();
+        }
       }
-    } else {
-      maxReward = currRew;
-      answBuff = [...currBuff];
-      answBuffCor = currBuffCor.slice();
     }
   } else {
     if (currBuff.length === 0) {
@@ -194,7 +223,7 @@ function solve(buffLen, currBuffCor, currBuff, isVertical, bar, kol) {
       buffCorTemp.push([0, kol]);
       buffTemp.push(matrix[0][kol]);
 
-      solve(buffLen - 1, buffCorTemp, buffTemp, isVertical, 0, kol);
+      if (!end) solve(buffLen - 1, buffCorTemp, buffTemp, isVertical, 0, kol);
     } else {
       if (isVertical) {
         for (let i = 0; i < baris; i++) {
@@ -205,12 +234,13 @@ function solve(buffLen, currBuffCor, currBuff, isVertical, bar, kol) {
             buffCorTemp.push([i, kol]);
             buffTemp.push(matrix[i][kol]);
 
-            solve(buffLen - 1, buffCorTemp, buffTemp, !isVertical, i, kol);
+            if (!end)
+              solve(buffLen - 1, buffCorTemp, buffTemp, !isVertical, i, kol);
           } else {
             const buffCorTemp = currBuffCor.slice();
             const buffTemp = [...currBuff];
 
-            solve(0, buffCorTemp, buffTemp, !isVertical, bar, kol);
+            if (!end) solve(0, buffCorTemp, buffTemp, !isVertical, bar, kol);
           }
         }
       } else {
@@ -222,12 +252,13 @@ function solve(buffLen, currBuffCor, currBuff, isVertical, bar, kol) {
             buffCorTemp.push([bar, i]);
             buffTemp.push(matrix[bar][i]);
 
-            solve(buffLen - 1, buffCorTemp, buffTemp, !isVertical, bar, i);
+            if (!end)
+              solve(buffLen - 1, buffCorTemp, buffTemp, !isVertical, bar, i);
           } else {
             const buffCorTemp = currBuffCor.slice();
             const buffTemp = [...currBuff];
 
-            solve(0, buffCorTemp, buffTemp, !isVertical, bar, kol);
+            if (!end) solve(0, buffCorTemp, buffTemp, !isVertical, bar, kol);
           }
         }
       }
@@ -269,9 +300,14 @@ Pilih jenis masukan:
       "\nMohon tunggu sebentar proses perhitungan sedang berlangsung...\n"
     );
     const start = performance.now();
-    for (let j = 2; j <= bufferSize; j++) {
+    const lengths = seq.map((s) => s.length);
+
+    const minLen = Math.min(...lengths);
+
+    maxSumReward = calcMaxRewardSum(this.reward);
+    for (let j = minLen; j <= bufferSize; j++) {
       for (let i = 0; i < kolom; i++) {
-        solve(j, [], [], true, 0, i);
+        if (!end) solve(j, [], [], true, 0, i);
       }
     }
     const end = performance.now();

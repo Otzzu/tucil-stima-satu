@@ -163,7 +163,7 @@ const ResModal = () => {
                     .map((c) => `(${c[1] + 1}, ${c[0] + 1})`)
                     .join(" ")}{" "}
                 </h3>
-                <h3>Optimal Reward: {data.maxReward}</h3>
+                <h3>Optimal Reward: {data.maxReward ? data.maxReward : 0}</h3>
                 <h3>Time: {data.time.toFixed(3)} ms</h3>
               </div>
             </div>

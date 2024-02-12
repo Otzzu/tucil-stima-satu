@@ -59,13 +59,21 @@ function arrayEquals(a: any[], b: any[]) {
   );
 }
 
-function calcReward(buffer: string[], regex: RegExp[], reward: number[]) {
+function calcReward(
+  buffer: string[],
+  regex: RegExp[],
+  reward: number[]
+): number | undefined {
   const str = buffer.join(" ");
-  let rew = 0;
+  let rew = undefined;
   for (let i = 0; i < regex.length; i++) {
     const res = str.match(regex[i]);
     if (res) {
-      rew += reward[i];
+      if (!rew) {
+        rew = reward[i];
+      } else {
+        rew += reward[i];
+      }
     }
   }
 
@@ -85,9 +93,9 @@ export class Solver {
   private answBuff: string[] = [];
   private answBuffCor: number[][] = [];
   private time: number = 0;
+  private maxSumReward: number | undefined = undefined;
+  private end: boolean = false;
   constructor() {}
-
-  
 
   public readDataFile(data: string): Solver {
     this.cleanUp();
@@ -124,11 +132,33 @@ export class Solver {
 
     return this;
   }
+
+  private calcMaxRewardSum(arr: number[]) {
+    let maxSoFar = 0;
+
+    const natNum = arr.filter((n) => n >= 0);
+
+    if (natNum.length > 0) {
+      maxSoFar = natNum.reduce((a, b) => a + b, 0);
+    } else {
+      maxSoFar = Math.max(...natNum);
+    }
+
+    return maxSoFar;
+  }
+
   public calc(): Solver {
     const start = performance.now();
-    for (let j = 2; j <= this.bufferSize; j++) {
+
+    const lengths = this.seq.map((s) => s.length);
+
+    const minLen = Math.min(...lengths);
+
+    this.maxSumReward = this.calcMaxRewardSum(this.reward);
+
+    for (let j = minLen; j <= this.bufferSize; j++) {
       for (let i = 0; i < this.kolom; i++) {
-        this.solve(j, [], [], true, 0, i);
+        if (!this.end) this.solve(j, [], [], true, 0, i);
       }
     }
     const end = performance.now();
@@ -150,16 +180,25 @@ export class Solver {
       const currRew = calcReward(currBuff, this.regex, this.reward);
       // console.log(currBuff)
 
-      if (this.maxReward !== undefined) {
-        if (currRew > this.maxReward) {
+      if (currRew !== undefined) {
+        if (currRew === this.maxSumReward) {
           this.maxReward = currRew;
           this.answBuff = [...currBuff];
           this.answBuffCor = currBuffCor.slice();
+          this.end = true;
+        } else {
+          if (this.maxReward !== undefined) {
+            if (currRew && currRew > this.maxReward) {
+              this.maxReward = currRew;
+              this.answBuff = [...currBuff];
+              this.answBuffCor = currBuffCor.slice();
+            }
+          } else {
+            this.maxReward = currRew;
+            this.answBuff = [...currBuff];
+            this.answBuffCor = currBuffCor.slice();
+          }
         }
-      } else {
-        this.maxReward = currRew;
-        this.answBuff = [...currBuff];
-        this.answBuffCor = currBuffCor.slice();
       }
     } else {
       if (currBuff.length === 0) {
@@ -169,7 +208,8 @@ export class Solver {
         buffCorTemp.push([0, kol]);
         buffTemp.push(this.matrix[0][kol]);
 
-        this.solve(buffLen - 1, buffCorTemp, buffTemp, isVertical, 0, kol);
+        if (!this.end)
+          this.solve(buffLen - 1, buffCorTemp, buffTemp, isVertical, 0, kol);
       } else {
         if (isVertical) {
           for (let i = 0; i < this.baris; i++) {
@@ -180,19 +220,21 @@ export class Solver {
               buffCorTemp.push([i, kol]);
               buffTemp.push(this.matrix[i][kol]);
 
-              this.solve(
-                buffLen - 1,
-                buffCorTemp,
-                buffTemp,
-                !isVertical,
-                i,
-                kol
-              );
+              if (!this.end)
+                this.solve(
+                  buffLen - 1,
+                  buffCorTemp,
+                  buffTemp,
+                  !isVertical,
+                  i,
+                  kol
+                );
             } else {
               const buffCorTemp = currBuffCor.slice();
               const buffTemp = [...currBuff];
 
-              this.solve(0, buffCorTemp, buffTemp, !isVertical, bar, kol);
+              if (!this.end)
+                this.solve(0, buffCorTemp, buffTemp, !isVertical, bar, kol);
             }
           }
         } else {
@@ -204,19 +246,21 @@ export class Solver {
               buffCorTemp.push([bar, i]);
               buffTemp.push(this.matrix[bar][i]);
 
-              this.solve(
-                buffLen - 1,
-                buffCorTemp,
-                buffTemp,
-                !isVertical,
-                bar,
-                i
-              );
+              if (!this.end)
+                this.solve(
+                  buffLen - 1,
+                  buffCorTemp,
+                  buffTemp,
+                  !isVertical,
+                  bar,
+                  i
+                );
             } else {
               const buffCorTemp = currBuffCor.slice();
               const buffTemp = [...currBuff];
 
-              this.solve(0, buffCorTemp, buffTemp, !isVertical, bar, kol);
+              if (!this.end)
+                this.solve(0, buffCorTemp, buffTemp, !isVertical, bar, kol);
             }
           }
         }
@@ -312,6 +356,8 @@ export class Solver {
     this.answBuff = [];
     this.answBuffCor = [];
     this.time = 0;
+    this.maxSumReward = undefined;
+    this.end = false;
   }
 
   public getResult() {
@@ -347,7 +393,7 @@ export class Solver {
       .join("\n");
 
     return `${false ? strFull.join("\n") : ""}${
-      this.maxReward
+      this.maxReward ? this.maxReward : 0
     }\n${strBuff}\n${strCor}\n\n${this.time.toFixed(3)}ms`;
   }
 }
