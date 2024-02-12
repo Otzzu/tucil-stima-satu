@@ -59,7 +59,15 @@ program berbasis cli juga akan terdapat pada folder test dengan nama Output.txt.
 
 ## Note
 Untuk program berbasis cli pastikan file masukan berada pada folder test. Output file pada program cli juga akan berada pada folder test dengan nama Output.txt. Pastikan
-masukan harus selalu _**BENAR**_ dan _**VALID**_ terutama pada program berbasis cli untuk menghindari kesalahan-kesalahan yang tidak diinginkan.
+masukan harus selalu _**BENAR**_ dan _**VALID**_ terutama pada program berbasis cli untuk menghindari kesalahan-kesalahan yang tidak diinginkan. Pada program web untuk masukan
+random input dan input biasa terkadang terdapat bug pada loading statenya sehingga tampilan loading tidak muncul di layar. Namun meski begitu sebenarnya proses pencarian solusi
+masih sedang berlangsung oleh sebab itu sebaiknya ditunggu saja dan jika untuk waktu yang lama tidak muncul sebuah solusi padahal seharusnya permasalahan tersebut bisa diselesaikan
+dengan cepat maka silahkan refresh halaman tersebut dan masukan kembali data yang ingin dicari solusinya
+
+
+![photo](https://drive.google.com/file/d/1jbBHLegVd7vMFpiZA_wfLf66Zfh2ahnJ/view?usp=sharing)
+Jika saat menjalankan program web mendapat pemberitahuan seperti gambar di atas ini maka sebaiknya pemberitahuan tersebut diabaikan dan tetap menunggu saja. Hal tersebut bukanlah error hanya saja terkadang untuk beberapa kasus program memerlukan waktu yang cukup lama untuk mencari solusi sehingga menimbulkan kejadian seperti gambar di atas.
+
 
 ## Author
 | Name  | NIM | Contact
