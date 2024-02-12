@@ -42,7 +42,7 @@ program berbasis cli juga akan terdapat pada folder test dengan nama Output.txt.
    ```
 5. Pada browser anda buka [http://localhost:3000/](http://localhost:3000/). Note: pastikan localhost port 3000 tidak dipakai oleh program lain
 
-### A. Cli
+### B. Cli
 1. Pastikan terdapat node.js pada device anda baik windows, linux, ataupun macOS. Node.js bisa di download di [sini](https://nodejs.org/en/download)
 1. Clone Repository
    ```sh
