@@ -236,7 +236,7 @@ const ResModal = () => {
             </div>
           </>
         )}
-        <div className="w-full gap-3 flex flex-row justify-end items-center">
+        <div className="w-full mt-2 gap-3 flex flex-row justify-end items-center">
           <Button onClick={download}>Download Answer</Button>
           <Button variant="destructive" onClick={onClose}>
             Close

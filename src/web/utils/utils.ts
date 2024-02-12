@@ -178,7 +178,6 @@ export class Solver {
   ) {
     if (buffLen === 0) {
       const currRew = calcReward(currBuff, this.regex, this.reward);
-      // console.log(currBuff)
 
       if (currRew !== undefined) {
         if (currRew === this.maxSumReward) {
