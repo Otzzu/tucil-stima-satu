@@ -73,6 +73,34 @@ dengan cepat maka silahkan refresh halaman tersebut dan masukan kembali data yan
 
 Jika saat menjalankan program web mendapat pemberitahuan seperti gambar di atas ini maka sebaiknya pemberitahuan tersebut diabaikan dan tetap menunggu saja. Hal tersebut bukanlah error hanya saja terkadang untuk beberapa kasus program memerlukan waktu yang cukup lama untuk mencari solusi sehingga menimbulkan kejadian seperti gambar di atas.
 
+## Contoh Masukan
+### 1. Web
+
+<br/>
+
+![photo](https://res.cloudinary.com/dssrh53qx/image/upload/v1707797732/stima/touc4ccqgzssewk4btcj.png)
+
+<br/>
+
+![photo](https://res.cloudinary.com/dssrh53qx/image/upload/v1707797732/stima/sg76xclthghuddch3c7k.png)
+
+<br/>
+
+![photo](https://res.cloudinary.com/dssrh53qx/image/upload/v1707797731/stima/fi5gcwkexfoyyzmsflzg.png)
+
+<br/>
+
+### 2. Cli
+
+<br/>
+
+![photo](https://res.cloudinary.com/dssrh53qx/image/upload/v1707797731/stima/gpi6sfqslhahsmxobahs.png)
+
+<br/>
+
+![photo](https://res.cloudinary.com/dssrh53qx/image/upload/v1707797731/stima/kjprqgygolx1t5deyzvy.png)
+
+<br/>
 
 ## Author
 | Name  | NIM | Contact
