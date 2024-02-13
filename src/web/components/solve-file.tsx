@@ -12,10 +12,12 @@ const SolveFile = () => {
   const { onOpen, setSolver, setType } = useModal();
   const [file, setFile] = useState<Blob | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
 
+    setError("")
     if (e.target.files) {
       setFile(e.target.files[0]);
     }
@@ -34,7 +36,14 @@ const SolveFile = () => {
       if (result) {
         // const data = readDataFile(result as string);
         // console.log(data)
-        const res = solver.readDataFile(result as string).calc();
+        const res2 = solver.readDataFile(result as string);
+
+        if (!res2) {
+          setError("File format not valid")
+          setLoading(false)
+          return
+        }
+        const res = res2.calc();
         setSolver(res);
 
         setType("file");
@@ -64,6 +73,7 @@ const SolveFile = () => {
             placeholder="File"
             onChange={handleChange}
           />
+          { error && <p className="text-red-500">{error}</p> }
         </div>
         <div className="w-full flex justify-end items-center ">
           <Button onClick={handleClick} size="lg" disabled={!file || loading}>

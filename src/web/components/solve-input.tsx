@@ -60,6 +60,7 @@ const SolveInput = () => {
   const additionalCheck = () => {
     const rew = form.getValues("reward");
     const sequ = form.getValues("sequence");
+    const matrix = form.getValues("matrix")
 
     if (!validToken(sequ.split("\n").join(" ").split(" "))) {
       form.setError("sequence", {
@@ -88,6 +89,28 @@ const SolveInput = () => {
       return false;
     }
 
+    if (
+      matrix
+        .split("\n")
+        .map((s) => s.trimEnd().split(" ").length)
+        .find((s) => s !== matrix.split("\n")[0].trimEnd().split(" ").length)
+    ) {
+      form.setError("matrix", {
+        message: "Invalid matrix",
+      });
+
+      return false;
+    }
+
+
+    if (sequ.split("\n").map(s => s.trimEnd().split(" ")).find(s => s.length < 2)){
+      form.setError("sequence", {
+        message: "Sequence length must be >= 2",
+      });
+
+      return false;
+    }
+
     return true;
   };
   return (
@@ -98,7 +121,7 @@ const SolveInput = () => {
           <form
             onSubmit={async (e) => {
               e.preventDefault();
-              additionalCheck() && await form.handleSubmit(handleOnSubmit)(e);
+              additionalCheck() && (await form.handleSubmit(handleOnSubmit)(e));
             }}
             className="gap-3 flex flex-col"
           >

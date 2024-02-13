@@ -82,9 +82,9 @@ function calcReward(
 
 export class Solver {
   private bufferSize: number = 0;
-  private matrix: string[][] = [];
+  public matrix: string[][] = [];
   private numSeq: number = 0;
-  private seq: string[][] = [];
+  public seq: string[][] = [];
   private reward: number[] = [];
   private regex: RegExp[] = [];
   private baris: number = 0;
@@ -97,40 +97,54 @@ export class Solver {
   private end: boolean = false;
   constructor() {}
 
-  public readDataFile(data: string): Solver {
+  public readDataFile(data: string): Solver | null {
     this.cleanUp();
-    const lines = data
-      .toString()
-      .split("\n")
-      .map((s) => s.trimEnd());
+    try {
+      const lines = data
+        .toString()
+        .split("\n")
+        .map((s) => s.trimEnd());
 
-    this.bufferSize = Number.parseInt(lines[0]);
-    const [kolomt, barist] = lines[1].split(" ").map((n) => Number.parseInt(n));
+      this.bufferSize = Number.parseInt(lines[0]);
+      const [kolomt, barist] = lines[1]
+        .split(" ")
+        .map((n) => Number.parseInt(n));
 
-    this.baris = barist;
-    this.kolom = kolomt;
-    this.matrix = Array(barist)
-      .fill([])
-      .map(() => Array(kolomt).fill(""));
+      this.baris = barist;
+      this.kolom = kolomt;
+      this.matrix = Array(barist)
+        .fill([])
+        .map(() => Array(kolomt).fill(""));
 
-    for (let i = 0; i < barist; i++) {
-      const line = lines[2 + i].trimEnd().split(" ");
-      for (let j = 0; j < kolomt; j++) {
-        this.matrix[i][j] = line[j];
+      for (let i = 0; i < barist; i++) {
+        const line = lines[2 + i].trimEnd().split(" ");
+        for (let j = 0; j < kolomt; j++) {
+          // console.log(line[j])
+          if (line[j].length !== 2) throw new Error();
+          this.matrix[i][j] = line[j];
+        }
       }
+
+      let numLine = barist + 2;
+      this.numSeq = Number.parseInt(lines[numLine++]);
+      // console.log(numSeq);
+      for (let i = 0; i < this.numSeq; i++) {
+        if (!validToken(lines[numLine].split(" "))) {
+          throw new Error();
+        }
+        if (lines[numLine].split(" ").length < 2) {
+          throw new Error();
+        }
+        this.seq.push(lines[numLine++].split(" "));
+        this.reward.push(Number.parseInt(lines[numLine++]));
+      }
+
+      this.regex = this.seq.map((str) => new RegExp(str.join("\\s"), "g"));
+
+      return this;
+    } catch (e) {
+      return null;
     }
-
-    let numLine = barist + 2;
-    this.numSeq = Number.parseInt(lines[numLine++]);
-    // console.log(numSeq);
-    for (let i = 0; i < this.numSeq; i++) {
-      this.seq.push(lines[numLine++].split(" "));
-      this.reward.push(Number.parseInt(lines[numLine++]));
-    }
-
-    this.regex = this.seq.map((str) => new RegExp(str.join("\\s"), "g"));
-
-    return this;
   }
 
   private calcMaxRewardSum(arr: number[]) {
